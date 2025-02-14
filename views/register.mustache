@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Usuário</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Registro de Usuário</h1>
+        <form id="registerForm">
+            <label for="name">Nome:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="password">Senha:</label>
+            <input type="password" id="password" name="password" required>
+
+            <div class="checkbox-container">
+                <input type="checkbox" id="isAdmin" name="isAdmin">
+                <label for="isAdmin">Criar conta como Administrador</label>
+            </div>
+
+            <button type="submit">Registrar</button>
+        </form>
+        <div id="message"></div>
+    </div>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Impede o envio padrão do formulário
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const isAdmin = document.getElementById('isAdmin').checked;
+
+            const button = document.querySelector('button');
+            button.disabled = true;
+
+            try {
+                const response = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password, isAdmin }),
+                });
+
+                const data = await response.json();
+                const messageDiv = document.getElementById('message');
+                messageDiv.textContent = data.message;
+                messageDiv.className = response.ok ? 'success' : 'error';
+
+                if (response.ok) {
+                    setTimeout(() => window.location.href = '/login', 2000);
+                }
+            } catch (error) {
+                document.getElementById('message').textContent = 'Erro ao registrar usuário.';
+                document.getElementById('message').className = 'error';
+            } finally {
+                button.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

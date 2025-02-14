@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Administrador</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <h1>Painel do Administrador</h1>
+            <a href="/logout" class="btn-logout">Sair</a>
+        </div>
+    </header>
+
+    <main>
+        <h2>Criar Ingresso</h2>
+        <form action="/tickets/create" method="POST">
+            <label>Nome: <input type="text" name="name" required></label>
+            <label>Preço: <input type="number" name="price" required></label>
+            <label>Quantidade: <input type="number" name="quantity" required></label>
+            <button type="submit">Criar Ingresso</button>
+        </form>
+
+        <h2>Ingressos Existentes</h2>
+        <ul>
+            
+{{#tickets}}
+<li>
+    <strong>{{name}}</strong> - R$ {{price}} - {{quantity}} disponíveis
+    <form action="/tickets/edit/{{_id}}" method="POST">
+        <label>Nome: <input type="text" name="name" value="{{name}}"></label>
+        <label>Preço: <input type="number" name="price" value="{{price}}"></label>
+        <label>Quantidade: <input type="number" name="quantity" value="{{quantity}}"></label>
+        <button type="submit">Editar</button>
+    </form>
+    
+    <!-- Botão para excluir ingresso -->
+    <form action="/tickets/delete/{{_id}}" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir este ingresso?');">
+        <button type="submit" style="background: red; margin-top: 5px;">Excluir</button>
+    </form>
+</li>
+{{/tickets}}
+        </ul>
+    </main>
+</body>
+</html>

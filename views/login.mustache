@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <form id="login-form">
+            <label>Email:</label>
+            <input type="email" id="email" required>
+            <label>Senha:</label>
+            <input type="password" id="password" required>
+            <button type="submit">Entrar</button>
+            <p class="error" id="error-message"></p>
+        </form>
+    </div>
+
+<script>
+    document.getElementById("login-form").addEventListener("submit", async function(event) {
+        event.preventDefault(); // Impede o envio padrão do formulário
+
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const errorMessage = document.getElementById("error-message");
+
+        try {
+            const response = await fetch("/api/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || "Erro ao fazer login");
+            }
+
+            window.location.href = "/dashboard"; 
+
+        } catch (error) {
+            console.error("Erro durante o login:", error);
+            errorMessage.textContent = error.message;
+        }
+    });
+
+async function carregarDashboard() {
+    try {
+        const resposta = await fetch("/api/auth/me"); // Requisição para a rota protegida
+        if (resposta.status === 401) {
+            alert("Sessão expirada! Faça login novamente.");
+            window.location.href = "/login"; // Redireciona para o login
+            return;
+        }
+        
+        const html = await resposta.text();
+        document.documentElement.innerHTML = html;
+    } catch (error) {
+        console.error("Erro ao carregar o dashboard:", error);
+    }
+}
+
+if (window.location.pathname !== "/login") {
+    carregarDashboard();
+}
+
+if (window.location.pathname !== "/login") {
+    carregarDashboard();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,210 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background-color: #f0f1f6;
+    color: #333;
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+/* Header */
+header {
+    background: linear-gradient(135deg, #ff4b2b, #ff416c);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    border-radius: 0 0 15px 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* Banner */
+.banner {
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+    color: white;
+    text-align: center;
+    padding: 30px 20px;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    margin: 20px auto;
+    max-width: 1000px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Benefícios */
+.benefits {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.benefits h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.benefits ul {
+    list-style: none;
+    padding: 0;
+}
+
+.benefits li {
+    font-size: 1rem;
+    margin-bottom: 8px;
+    color: #444;
+}
+
+/* Container Principal */
+main {
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    text-transform: capitalize;
+}
+
+/* Links e Botões */
+a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    background-color: #0056b3;
+    padding: 10px 18px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+a:hover {
+    background-color: #ff4b2b;
+}
+
+/* Formulários */
+form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1rem;
+    color: #444;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #ff416c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: #ff4b2b;
+}
+
+/* Container Admin e Logout */
+.admin-container {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* Botões */
+.btn-admin, .btn-logout {
+    padding: 8px 15px;
+    text-decoration: none;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.btn-admin {
+    background-color: #0056b3;
+    color: white;
+}
+
+.btn-admin:hover {
+    background-color: #ff4b2b;
+}
+
+.btn-logout {
+    background-color: #0056b3;
+    color: white;
+}
+
+.btn-logout:hover {
+    background-color: #ff4b2b;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    main {
+        padding: 15px;
+    }
+
+    .admin-container {
+        right: 5px;
+        top: 5px;
+    }
+
+    .btn-admin, .btn-logout {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 10px;
+    }
+
+    .admin-container {
+        flex-direction: column;
+        gap: 5px;
+    }
+}

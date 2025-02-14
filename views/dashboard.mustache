@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="admin-container">
+    <a id="adminLink" href="/admin-dashboard" class="btn-admin" style="display: none;">Painel do Admin</a>
+    <a href="/logout" class="btn-logout">Sair</a>
+</div>
+
+    <header>
+        <h1>Bem-vindo, {{user.name}}</h1>
+    </header>
+
+    <main>
+        <h2>Ingressos Disponíveis</h2>
+        <ul>
+            {{#tickets}}
+            <li>
+                <strong>{{name}}</strong> - R$ {{price}} ({{quantity}} disponíveis)
+                <form action="/api/purchase" method="POST">
+                    <input type="hidden" name="ticketTypeId" value="{{_id}}">
+                    <label>Quantidade:
+                        <input type="number" name="quantity" min="1" max="{{quantity}}" required>
+                    </label>
+                    <button type="submit">Comprar</button>
+                </form>
+            </li>
+            {{/tickets}}
+        </ul>
+    
+<h2>Histórico de Compras</h2>
+<ul id="purchaseHistoryList">
+    {{#purchases}}
+        <li>
+            <strong>Ingresso:</strong> {{ticketTypeId.name}} <br>
+            <strong>Quantidade:</strong> {{quantity}} <br>
+            <strong></strong> {{createdAt}}
+        </li>
+    {{/purchases}}
+
+    {{^purchases}}
+        <li>Você ainda não comprou ingressos.</li>
+    {{/purchases}}
+</ul>
+
+    </main>
+
+<script>
+    // Verifica se o usuário é admin e exibe o botão "Painel Admin"
+async function checkUserRole() {
+    try {
+        const response = await fetch('/api/auth/me', {
+            method: "GET",
+            credentials: "same-origin"  // Importante para enviar o cookie da sessão
+        });
+
+        if (!response.ok) throw new Error("Usuário não autenticado");
+
+        const user = await response.json();
+        console.log("Usuário autenticado:", user);
+
+        // Exibe o link para o painel admin apenas se o usuário for admin
+        if (user.role === "admin") {
+            document.getElementById("adminLink").style.display = "inline-block";
+        }
+    } catch (error) {
+        console.error("Erro ao verificar role do usuário:", error);
+        window.location.href = "/login";
+    }
+}
+
+// Busca histórico de compras do usuário autenticado
+    async function fetchPurchaseHistory() {
+        try {
+            const response = await fetch('/api/purchases/history');
+            if (!response.ok) throw new Error("Erro ao buscar histórico");
+
+            const purchases = await response.json();
+            const purchaseList = document.getElementById('purchaseHistoryList');
+            purchaseList.innerHTML = ""; // Limpa a lista antes de preencher
+
+            if (purchases.length === 0) {
+                purchaseList.innerHTML = "<li>Nenhuma compra encontrada.</li>";
+            } else {
+                purchases.forEach(purchase => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<strong>Ingresso:</strong> ${purchase.ticketTypeId?.name || "Desconhecido"} <br>
+                                    <strong>Quantidade:</strong> ${purchase.quantity} <br>
+                                    <strong>Data da Compra:</strong> ${new Date(purchase.createdAt).toLocaleDateString()}`;
+                    purchaseList.appendChild(li);
+                });
+            }
+        } catch (error) {
+            console.error("Erro ao buscar histórico de compras:", error);
+            document.getElementById('purchaseHistoryList').innerHTML = "<li>Erro ao carregar histórico.</li>";
+        }
+    }
+
+    // Carregar dados ao abrir a página
+    document.addEventListener("DOMContentLoaded", () => {
+        fetchUserData();
+        fetchPurchaseHistory();
+    });
+    checkUserRole();
+</script>
+</body>
+</html>
