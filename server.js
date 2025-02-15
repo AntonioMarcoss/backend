@@ -76,7 +76,7 @@ app.get('/dashboard', authMiddleware.authenticate, async (req, res) => {
         const purchases = await TicketPurchase.find({ userId: req.user.id }).populate('ticketTypeId');
 
         res.render('dashboard', { 
-            user: req.user,  // Passa os dados do usuário para o Mustache
+            user: req.user,
             tickets, 
             purchases 
         });
@@ -86,7 +86,6 @@ app.get('/dashboard', authMiddleware.authenticate, async (req, res) => {
     }
 });
 
-// 🔥 ROTA API PARA HISTÓRICO DE COMPRAS 🔥
 app.get('/api/purchases/history', authMiddleware.authenticate, async (req, res) => {
     try {
         const purchases = await TicketPurchase.find({ userId: req.user._id }).populate('ticketTypeId');
@@ -105,7 +104,7 @@ app.get('/admin-dashboard', authMiddleware.authenticate, authMiddleware.isAdmin,
         // Renderiza a página de administração com os ingressos
         res.render('admin-dashboard', { 
             user: req.session.user, 
-            tickets: tickets // Passa os ingressos para o template
+            tickets: tickets
         });
     } catch (error) {
         console.error("Erro ao carregar os ingressos:", error);
@@ -168,7 +167,7 @@ app.post('/tickets/delete/:id', authMiddleware.authenticate, authMiddleware.isAd
     try {
         const ticketId = req.params.id;
         await TicketType.findByIdAndDelete(ticketId);
-        res.redirect('/admin-dashboard'); // Redireciona para o painel após exclusão
+        res.redirect('/admin-dashboard');
     } catch (error) {
         console.error("Erro ao excluir ingresso:", error);
         res.status(500).send("Erro ao excluir ingresso.");
@@ -204,7 +203,7 @@ app.post('/api/purchase', authMiddleware.authenticate, async (req, res) => {
         });
         await purchase.save();
 
-        res.redirect('/dashboard'); // 🔥 Alterado para garantir atualização
+        res.redirect('/dashboard');
     } catch (error) {
         res.status(500).json({ message: 'Erro ao processar a compra' });
     }
