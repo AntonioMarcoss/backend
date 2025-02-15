@@ -63,3 +63,4 @@ exports.deleteTicketType = async (req, res) => {
     res.status(400).send({ error: 'Falha ao deletar ingresso' });
   }
 };
+
