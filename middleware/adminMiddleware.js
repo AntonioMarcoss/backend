@@ -4,3 +4,4 @@ module.exports = (req, res, next) => {
     }
     return res.status(403).json({ message: 'Acesso negado. Apenas administradores podem executar esta ação.' });
 };
+
